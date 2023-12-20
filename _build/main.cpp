@@ -10,6 +10,9 @@ int main() {
 	//rectangle dimensions
 	const int WIDTH{ 50 };
 	const int HEIGHT{ 80 };
+	bool isInAir{false};
+	// jump velocity
+	const int JUMP_VEL{ -22 };
 
 	int posY{ WINDOW_HEIGHT - HEIGHT };
 	int velocity{0};
@@ -32,14 +35,16 @@ int main() {
 		if (posY >= WINDOW_HEIGHT - HEIGHT) {
 			//on the ground
 			velocity = 0;
+			isInAir = false;
 		}
 		else {
 			//in the air
 			//apply gravity
 			velocity += gravity;
+			isInAir = true;
 		}
-		if (IsKeyPressed(KEY_SPACE)) {
-			velocity -= 10;
+		if (IsKeyPressed(KEY_SPACE) && !isInAir) {
+			velocity += JUMP_VEL;
 		}
 
 
