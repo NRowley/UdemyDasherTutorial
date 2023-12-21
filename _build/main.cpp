@@ -13,6 +13,8 @@ int main() {
 	bool isInAir{false};
 	// jump velocity
 	const int JUMP_VEL{ -22 };
+	//initialize the window
+	InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "DASHER");
 
 	/*int posY{ WINDOW_HEIGHT - HEIGHT };*/
 	int velocity{0};
@@ -23,15 +25,14 @@ int main() {
 	Texture2D scarfy = LoadTexture("textures/scarfy.png");
 	Rectangle scarfyRec;
 	scarfyRec.width = scarfy.width / 6;
-	scarfy.height = scarfy.height;
+	scarfyRec.height = scarfy.height;
 	scarfyRec.x = 0;
 	scarfyRec.y = 0;
 	Vector2 scarfyPos;
 	scarfyPos.x = WINDOW_WIDTH / 2 - scarfyRec.width / 2;
 	scarfyPos.y = WINDOW_HEIGHT - scarfyRec.height;
 
-	//initialize the window
-	InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "DASHER");
+	
 
 	SetTargetFPS(60);
 	while (!WindowShouldClose()) {
