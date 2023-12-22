@@ -12,15 +12,15 @@ int main() {
 	//const int HEIGHT{ 80 };
 	bool isInAir{false};
 	// jump velocity
-	const int JUMP_VEL{ -22 };
+	const int JUMP_VEL{ -600 };
 	//initialize the window
 	InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "DASHER");
 
 	/*int posY{ WINDOW_HEIGHT - HEIGHT };*/
 	int velocity{0};
 
-	//acceleration due to gravity (pixels/frame/frame)
-	const int gravity{ 1 };
+	//acceleration due to gravity (pixels/s)/s
+	const int gravity{ 1000 };
 
 	Texture2D scarfy = LoadTexture("textures/scarfy.png");
 	Rectangle scarfyRec;
@@ -32,14 +32,18 @@ int main() {
 	scarfyPos.x = WINDOW_WIDTH / 2 - scarfyRec.width / 2;
 	scarfyPos.y = WINDOW_HEIGHT - scarfyRec.height;
 
-	
+	//animation frame player
+	int frame{ 0 };
+	const float UPDATE_TIME{ 1.0 / 12.0 };
+	float runningTime{};
 
 	SetTargetFPS(60);
 	while (!WindowShouldClose()) {
 		//Start Drawing
 		BeginDrawing();
 		ClearBackground(WHITE);
-
+		//delta time (time since last frame)
+		float deltaTime{ GetFrameTime() };
 		
 
 		//ground check
@@ -51,7 +55,7 @@ int main() {
 		else {
 			//in the air
 			//apply gravity
-			velocity += gravity;
+			velocity += gravity * deltaTime;
 			isInAir = true;
 		}
 		if (IsKeyPressed(KEY_SPACE) && !isInAir) {
@@ -60,7 +64,18 @@ int main() {
 
 
 		//update position
-		scarfyPos.y += velocity;
+		scarfyPos.y += velocity * deltaTime;
+		runningTime += deltaTime;
+		if (runningTime >= UPDATE_TIME) {
+			runningTime = 0.0;
+			//update animation frame
+			scarfyRec.x = frame * scarfyRec.width;
+			frame++;
+			if (frame > 5) {
+				frame = 0;
+			}
+		}
+		
 
 		DrawTextureRec(scarfy, scarfyRec, scarfyPos, WHITE);
 
