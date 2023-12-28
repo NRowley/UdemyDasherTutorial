@@ -3,6 +3,15 @@
 #include <string>
 using namespace std;
 
+struct AnimData {
+	Rectangle rec;
+	Vector2 pos;
+	int frame;
+	float updateTime;
+	float runningTime;
+};
+
+
 int main() {
 	//window dimensions;
 	const int WINDOW_WIDTH{ 512 };
@@ -24,19 +33,40 @@ int main() {
 
 	//Nebula variables
 	Texture2D nebula = LoadTexture("textures/12_nebula_spritesheet.png");
+
 	Rectangle nebRec{ 0.0, 0.0, nebula.width / 8, nebula.height / 8 };
 	Vector2 nebPos{ WINDOW_WIDTH, WINDOW_HEIGHT - nebRec.height };
+
+	Rectangle neb2Rec{ 0.0, 0.0, nebula.width / 8, nebula.height / 8 };
+	Vector2 neb2Pos{ WINDOW_WIDTH + 300, WINDOW_HEIGHT - neb2Rec.height };
+
+
 	// nebula anim var
 	int nebFrame{};
 	const float NEB_UPDATE_TIME{ 1.0 / 12.0 };
 	float nebRunningTime{};
 	
+	int neb2Frame{};
+	const float NEB2_UPDATE_TIME{ 1.0 / 16.0 };
+	float neb2RunningTime{};
+
 	//nebula X velocity
 	int nebVel{-200};
 
 
 	//Scarfy variables
 	Texture2D scarfy = LoadTexture("textures/scarfy.png");
+	AnimData scarfyData;
+	scarfyData.rec.width = scarfy.width / 6;
+	scarfyData.rec.height = scarfy.height;
+	scarfyData.rec.x = 0;
+	scarfyData.rec.y = 0;
+	scarfyData.pos.x = WINDOW_WIDTH / 2 - scarfyData.rec.width / 2;
+	scarfyData.pos.y = WINDOW_HEIGHT - scarfyData.rec.height;
+	scarfyData.frame = 0;
+	scarfyData.updateTime = 1.0 / 12.0;
+	scarfyData.runningTime = 0.0;
+
 	Rectangle scarfyRec;
 	scarfyRec.width = scarfy.width / 6;
 	scarfyRec.height = scarfy.height;
@@ -79,6 +109,9 @@ int main() {
 		//update nebula position
 		nebPos.x += nebVel * deltaTime;
 
+		neb2Pos.x += nebVel * deltaTime;
+
+
 		//update position
 		scarfyPos.y += velocity * deltaTime;
 		//scarfy anim update
@@ -105,8 +138,21 @@ int main() {
 				nebFrame = 0;
 			}
 		}
+
+		neb2RunningTime += deltaTime;
+		if (neb2RunningTime >= NEB2_UPDATE_TIME) {
+			neb2RunningTime = 0.0;
+			neb2Rec.x = neb2Frame * neb2Rec.width;
+			neb2Frame++;
+			if (neb2Frame > 7) {
+				neb2Frame = 0;
+			}
+		}
+
 		//draw nebula
 		DrawTextureRec(nebula, nebRec, nebPos, WHITE);
+		//draw nebula 2
+		DrawTextureRec(nebula, neb2Rec, neb2Pos, RED);
 
 		//draw scarfy
 		DrawTextureRec(scarfy, scarfyRec, scarfyPos, WHITE);
