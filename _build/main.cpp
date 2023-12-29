@@ -14,16 +14,15 @@ struct AnimData {
 
 int main() {
 	//window dimensions;
-	const int WINDOW_WIDTH{ 512 };
-	const int WINDOW_HEIGHT{ 380 };
-	////rectangle dimensions
-	//const int WIDTH{ 50 };
-	//const int HEIGHT{ 80 };
+	int windowDimensions[2];
+	windowDimensions[0] = 512;
+	windowDimensions[1] = 380;
+	
 	bool isInAir{ false };
 	// jump velocity
 	const int JUMP_VEL{ -600 };
 	//initialize the window
-	InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "DASHER");
+	InitWindow(windowDimensions[0], windowDimensions[1], "DASHER");
 
 	/*int posY{ WINDOW_HEIGHT - HEIGHT };*/
 	int velocity{ 0 };
@@ -37,7 +36,7 @@ int main() {
 	//AnimData for nebula
 	AnimData nebData{ 
 		{ 0.0, 0.0, nebula.width / 8, nebula.height / 8 }, // Rectangle Rec
-		{WINDOW_WIDTH, WINDOW_HEIGHT - nebula.height / 8 }, // Vector2 pos
+		{windowDimensions[0], windowDimensions[1] - nebula.height / 8}, // Vector2 pos
 		0, //int frame
 		{1.0 / 12.0 }, // float updateTime
 		0 //float runningTime
@@ -45,7 +44,7 @@ int main() {
 
 	AnimData neb2Data{
 		{ 0.0, 0.0, nebula.width / 8, nebula.height / 8 },
-		{ WINDOW_WIDTH + 300, WINDOW_HEIGHT - nebula.height / 8 },
+		{ windowDimensions[0] + 300, windowDimensions[1] - nebula.height / 8 },
 		0,
 		{1.0 / 16.0 },
 		0
@@ -62,8 +61,8 @@ int main() {
 	scarfyData.rec.height = scarfy.height;
 	scarfyData.rec.x = 0;
 	scarfyData.rec.y = 0;
-	scarfyData.pos.x = WINDOW_WIDTH / 2 - scarfyData.rec.width / 2;
-	scarfyData.pos.y = WINDOW_HEIGHT - scarfyData.rec.height;
+	scarfyData.pos.x = windowDimensions[0] / 2 - scarfyData.rec.width / 2;
+	scarfyData.pos.y = windowDimensions[1] - scarfyData.rec.height;
 	scarfyData.frame = 0;
 	scarfyData.updateTime = 1.0 / 12.0;
 	scarfyData.runningTime = 0.0;
@@ -78,7 +77,7 @@ int main() {
 		
 
 		//ground check
-		if (scarfyData.pos.y >= WINDOW_HEIGHT - scarfyData.rec.height) {
+		if (scarfyData.pos.y >= windowDimensions[1] - scarfyData.rec.height) {
 			//on the ground
 			velocity = 0;
 			isInAir = false;
